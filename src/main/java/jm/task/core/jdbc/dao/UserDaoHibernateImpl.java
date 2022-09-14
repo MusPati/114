@@ -22,7 +22,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS user (id INT NOT NULL AUTO_INCREMENT, " +
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS User (id INT NOT NULL AUTO_INCREMENT, " +
                     "name VARCHAR (45), lastName VARCHAR(45), age TINYINT  NOT NULL, PRIMARY KEY (id))").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -31,13 +31,15 @@ public class UserDaoHibernateImpl implements UserDao {
             }
             e.printStackTrace();
         }
+        System.out.println("Таблица создана" );
+
     }
 
     @Override
     public void dropUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery("DROP TABLE IF EXISTS user").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS User").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if (transaction !=null) {
@@ -97,7 +99,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.createQuery("DELETE FROM Weather").executeUpdate();
+            session.createQuery("DELETE FROM User").executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
