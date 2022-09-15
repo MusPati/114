@@ -10,14 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
-
-    private static final SessionFactory sessionFactory = Util.getSessionFactory();
-    org.hibernate.Transaction transaction = null;
+    private org.hibernate.Transaction transaction = null;
 
     public UserDaoHibernateImpl() {
-
     }
-
     @Override
     public void createUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
@@ -85,11 +81,7 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction = session.beginTransaction();
             userList = session.createQuery("FROM User",
                     User.class).list();
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             e.printStackTrace();
         }
         return userList;
