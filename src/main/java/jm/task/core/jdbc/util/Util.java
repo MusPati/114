@@ -13,52 +13,42 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import static java.sql.DriverManager.drivers;
-import static java.sql.DriverManager.getConnection;
-
 public class Util {
     private static SessionFactory sessionFactory;
-        public static SessionFactory getSessionFactory () {
 
-            if (sessionFactory == null) {
-                    Configuration configuration = new Configuration();
+    public static SessionFactory getSessionFactory() {
 
-                    Properties settings = new Properties();
-                    settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-                    settings.put(Environment.URL, "jdbc:mysql://localhost:3306/test1?useSSL=false");
-                    settings.put(Environment.USER, "root");
-                    settings.put(Environment.PASS, "mpati036");
-                    settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
-                    settings.put(Environment.SHOW_SQL, "true");
-                    settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-                    settings.put(Environment.HBM2DDL_AUTO, "update");
-                    //"create-drop"
+        if (sessionFactory == null) {
+            Configuration configuration = new Configuration();
 
-                    configuration.setProperties(settings);
-                    configuration.addAnnotatedClass(User.class);
+            Properties settings = new Properties();
+            settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+            settings.put(Environment.URL, "jdbc:mysql://localhost:3306/test1?useSSL=false");
+            settings.put(Environment.USER, "root");
+            settings.put(Environment.PASS, "mpati036");
+            settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+            settings.put(Environment.SHOW_SQL, "true");
+            settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+            settings.put(Environment.HBM2DDL_AUTO, "update");
 
-                    ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                            .applySettings(configuration.getProperties()).build();
+            configuration.setProperties(settings);
+            configuration.addAnnotatedClass(User.class);
 
-                    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-                }
-            return sessionFactory;
+            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties()).build();
+
+            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
-
+        return sessionFactory;
+    }
     private static String url = "jdbc:mysql://localhost:3306/test1";
     private static String username = "root";
     private static String password = "mpati036";
-    public static Connection getConnection() {
+
+    public static Connection getConnection() throws SQLException {
         Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-          //  System.out.println("Успешное соединение с БД");
-        } catch (SQLException e ) {
-            e.printStackTrace();
-            System.out.println("Соединение не установлено");
-        }
+        conn = DriverManager.getConnection(url, username, password);
         return conn;
     }
 }
 
-// реализуйте настройку соеденения с БД
